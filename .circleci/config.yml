@@ -2,9 +2,10 @@ version: 2.1
 
 orbs:
   aws-cli: circleci/aws-cli@4.1.2
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 
 jobs:
-  excute_cloudformation:
+  execute_cloudformation:
     executor: aws-cli/default
     steps:
       - checkout
@@ -17,8 +18,24 @@ jobs:
           command: |
             set -x
             aws cloudformation deploy --template-file cloudformation/sample_stack.yml --stack-name sampleStack
+  execute_ansible:
+    executor: ansible-playbook/default
+    circleci_ip_ranges: true
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - '99:aa:df:0f:d2:ee:fe:c8:fb:4a:36:41:c8:88:77:01'
+      - ansible-playbook/install:
+          version: 2.9.23
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: '-u ec2-user -i ansible/inventory --private-key ~/.ssh/id_rsa'
 
 workflows:
   raisetech-live15-demo-20231216-workflow:
     jobs:
-      - excute_cloudformation
+      - execute_cloudformation
+      - execute_ansible:
+          requires:
+            - execute_cloudformation

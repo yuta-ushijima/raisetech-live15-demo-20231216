@@ -1,0 +1,22 @@
+- name: Setup Target Node
+  become: yes
+  hosts: target_node
+  tasks:
+    - name: Install git
+      ansible.builtin.yum:
+        name: git
+        state: present
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: practice
+        state: directory
+        mode: '0755'
+    - name: Touch sample_text.txt to target_node/practice directory
+      ansible.builtin.file:
+        dest: practice/sample.txt
+        state: touch
+    - name: single line edit on practice/sample.txt
+      ansible.builtin.lineinfile:
+        path: practice/sample.txt
+        state: present
+        line: 'テスト'
