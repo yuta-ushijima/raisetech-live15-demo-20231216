@@ -20,6 +20,7 @@ jobs:
             aws cloudformation deploy --template-file cloudformation/sample_stack.yml --stack-name sampleStack
   execute_ansible:
     executor: ansible-playbook/default
+    circleci_ip_ranges: true
     steps:
       - checkout
       - add_ssh_keys:
