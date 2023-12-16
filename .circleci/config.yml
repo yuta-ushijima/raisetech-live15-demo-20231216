@@ -5,7 +5,7 @@ orbs:
   ansible-playbook: orbss/ansible-playbook@0.0.5
 
 jobs:
-  excute_cloudformation:
+  execute_cloudformation:
     executor: aws-cli/default
     steps:
       - checkout
@@ -34,4 +34,7 @@ jobs:
 workflows:
   raisetech-live15-demo-20231216-workflow:
     jobs:
-      - excute_cloudformation
+      - execute_cloudformation
+      - execute_ansible:
+          requires:
+            - execute_cloudformation
