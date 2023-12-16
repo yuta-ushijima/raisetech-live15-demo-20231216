@@ -1,5 +1,6 @@
 - name: Setup Target Node
   become: yes
+  hosts: target_node
   tasks:
     - name: Install git
       ansible.builtin.yum:
