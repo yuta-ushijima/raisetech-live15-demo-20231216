@@ -6,6 +6,11 @@
       ansible.builtin.yum:
         name: git
         state: present
+    - name: Create a directory if it does not exist
+      ansible.builtin.file:
+        path: practice
+        state: directory
+        mode: '0755'
     - name: Touch sample_text.txt to target_node/practice directory
       ansible.builtin.file:
         dest: practice/sample.txt
